@@ -1,0 +1,149 @@
+#Importing the libraries
+
+import numpy as np
+import pandas as pd
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+
+
+#Reading the given dataset from CSV file
+
+pima = pd.read_csv(r'C:/Users/mohma/OneDrive/Documents/Data Science Learning\diabetes.csv')
+print(pima)
+
+
+
+#Display the last 10 records from the dataset
+
+pima.tail(10)
+
+
+
+#Display the first 1o records from the dataset
+
+pima.head(10)
+
+
+
+#Display the dimensions of the dataset
+
+pima.shape
+pima.size
+
+
+
+#Display the datatypes and variables of the dataset
+
+pima.info()
+
+
+
+#Display any null values in the dataset
+
+pima.isnull().values.any()
+
+
+
+#Display the maximum, minimum, mean, and median of each column in the dataset
+
+pima.iloc[:,0:8].agg({
+        "Pregnancies": ["min", "max", "median", "mean"],
+        "Glucose": ["min", "max", "median", "mean"],
+        "BloodPressure": ["min", "max", "median", "mean"],
+        "SkinThickness": ["min", "max", "median", "mean"],
+        "Insulin": ["min", "max", "median", "mean"],
+        "BMI": ["min", "max", "median", "mean"],
+        "DiabetesPedigreeFunction": ["min", "max", "median", "mean"],
+        "Age": ["min", "max", "median", "mean"]})
+ 
+ 
+ 
+ #Plotting the distribution for the 'Blood Pressure' column
+ 
+ sns.displot(pima['BloodPressure'], kind='kde')
+plt.show()
+
+
+
+#Displaying the BMI of the individual with the highest glucose level
+
+pima[pima['Glucose']==pima['Glucose'].max()]['BMI']
+
+
+
+#Displaying the three measures of central tendency for the 'BMI' column
+
+m1 = pima['BMI'].mean()
+print(m1)
+m2 = pima['BMI'].median()
+print(m2)
+m3 = pima['BMI'].mode()[0]
+print(m3)
+
+
+
+#Displaying the number of individuals with a Glcuose level greater than the mean within that column
+
+pima[pima['Glucose']>pima['Glucose'].mean()].shape[0]
+
+
+
+#Displaying the number of individuals with 'BloodPressure' equal to the median of 'BloodPressure' and their 'BMI' less than the median of 'BMI'
+
+pima[(pima['BloodPressure']==pima['BloodPressure'].median()) & (pima['BMI']<pima['BMI'].median())]
+
+
+
+#Displaying a pairplot between the variables 'Glucose', 'SkinThickness', and 'DiabetesPedigreeFunction'
+
+sns.pairplot(data=pima,vars=['Glucose', 'SkinThickness', 'DiabetesPedigreeFunction'], hue='Outcome')
+plt.show()
+
+
+#Displaying a scatterplot between 'Glucose' and 'Insulin'
+
+sns.scatterplot(x='Glucose',y='Insulin',data=pima)
+plt.show()
+
+
+#Displaying a boxplot for the 'Age' variable
+
+plt.boxplot(pima['Age'])
+plt.title('Boxplot of Age')
+plt.ylabel('Age')
+plt.show()
+
+
+#Displaying a histogram for the 'Age' variable to understand the number of women in different age groups given whether they have diabetes or not
+
+plt.hist(pima[pima['Outcome']==1]['Age'], bins = 5)
+plt.title('Distribution of Age for Women who has Diabetes')
+plt.xlabel('Age')
+plt.ylabel('Frequency')
+plt.show()
+
+plt.hist(pima[pima['Outcome']==0]['Age'], bins = 5)
+plt.title('Distribution of Age for Women who do not have Diabetes')
+plt.xlabel('Age')
+plt.ylabel('Frequency')
+plt.show()
+
+
+#Displaying the interquartile range for all the variables
+
+Q1 = pima.quantile(0.25)
+Q3 = pima.quantile(0.75)
+IQR = Q3 - Q1
+print(IQR)
+
+#Displaying a correlation matrix and heat map including all variables
+
+corr_matrix = pima.iloc[:,0:8].corr()
+corr_matrix
+
+plt.figure(figsize=(8,8))
+sns.heatmap(corr_matrix, annot = True)
+plt.show()
