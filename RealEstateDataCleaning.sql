@@ -17,7 +17,7 @@ UPDATE NashvilleHousingData..Sheet1$
 SET SaleDate = CONVERT(Date, SaleDate)
 
 
---Populate Property Address data
+--Populate Property Address data (i.e. fill in null values)
 
 SELECT *
 FROM NashvilleHousingData..Sheet1$
