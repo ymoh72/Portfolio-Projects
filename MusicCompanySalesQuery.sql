@@ -9,7 +9,7 @@ Country
 FROM Chinook.customers
 WHERE Country != 'USA';
 
---Displaying list of distinct invoiced countries 
+--Displaying list of distinct countries 
 
 SELECT DISTINCT(BillingCountry)
 FROM Chinook.invoices;
@@ -28,7 +28,7 @@ LEFT JOIN Chinook.invoices
 WHERE Country = 'Brazil';
 
 
---Displaying the purchase details with each invoice
+--Combining three tables to display purchase details with each invoice
 
 SELECT i.InvoiceLineID,
 t.Name as TrackName,
@@ -61,8 +61,6 @@ LEFT JOIN Chinook.customers
     ON employees.EmployeeId = customers.SupportRepId
 GROUP BY EmployeeId;
 
---Displaying invoice, employee, and customer data for concurrently
-
 
 --Displaying the number and total sales for the year 2009
 
@@ -76,6 +74,7 @@ LEFT JOIN Chinook.invoices
 ON invoice_items.InvoiceId = invoices.InvoiceId
 WHERE InvoiceDate LIKE '%2009%'
 GROUP BY InvoiceDate;
+
 
 --Displaying sales earnings for each employee in 2009
 
