@@ -3,23 +3,23 @@ CovidProject..CovidDeaths$
 WHERE continent IS NOT NULL
 ORDER BY 3,4;
 
---SELECT * FROM
---CovidProject..CovidVaccinations$
---ORDER BY 3,4;
+SELECT * FROM
+CovidProject..CovidVaccinations$
+ORDER BY 3,4;
 
 SELECT Location, date, total_cases, new_cases, total_deaths, population
 FROM CovidProject..CovidDeaths$
 ORDER BY 1,2
 
---Looking at Total Cases vs Total Deaths
---Shows likelihood of dying if you contract COVID in each country
+/*Looking at Total Cases vs Total Deaths
+Shows likelihood of dying if you contract COVID in each country*/
 SELECT Location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 AS DeathPercentage
 FROM CovidProject..CovidDeaths$
 WHERE location LIKE '%states%'
 ORDER BY 1,2
 
---Looking at Total Cases vs Population
---Shows what percentage of population has contracted COVID
+/*Looking at Total Cases vs Population
+Shows what percentage of population has contracted COVID*/
 SELECT Location, date, total_cases, population, (total_cases/population)*100 AS DeathPercentage
 FROM CovidProject..CovidDeaths$
 WHERE location LIKE '%states%'
@@ -32,7 +32,7 @@ FROM CovidProject..CovidDeaths$
 GROUP BY location, population
 ORDER BY PercentOfInfectedPopulation DESC
 
---Looking at countries with highest death count per population
+--Looking at countries with highest death rate
 
 SELECT Location, MAX(cast(total_deaths AS int)) AS TotalDeathCount
 FROM CovidProject..CovidDeaths$
@@ -40,7 +40,7 @@ WHERE continent IS NOT NULL
 GROUP BY location
 ORDER BY TotalDeathCount DESC
 
---GROUPING BY CONTINENT
+
 --Showing continents with highest death count
 
 SELECT continent, MAX(cast(total_deaths AS int)) AS TotalDeathCount
@@ -50,7 +50,7 @@ GROUP BY continent
 ORDER BY TotalDeathCount DESC
 
 
---GLOBAL NUMBERS
+--Displaying global COVID numbers
 
 SELECT date, SUM(new_cases) AS total_cases, SUM(cast(new_deaths AS int)) as total_deaths, SUM(cast(new_deaths as int))/SUM(new_cases)*100 AS DeathPercentage
 FROM CovidProject..CovidDeaths$
@@ -59,7 +59,7 @@ GROUP BY date
 ORDER BY 1,2
 
 
---Looking at Total Population vs Vaccinations (using CTE)
+--Looking at vaccination rate over time using CTE
 
 WITH PopsVac(continent, location, date, population, RollingCountVaccinated,new_vaccinations)
 AS
@@ -80,7 +80,7 @@ JOIN CovidProject..CovidVaccinations$ vac
 	FROM PopsVac
 
 
---TEMP TABLE
+--Using temp table to view global vaccination rates
 
 DROP TABLE IF exists #PercentPopulationVaccinated
 CREATE TABLE #PercentPopulationVaccinated
@@ -109,7 +109,7 @@ JOIN CovidProject..CovidVaccinations$ vac
 
 
 
---Creating view to store data for later visualizations
+--Creating view to store data for later visualization in Tableau
 
 CREATE VIEW 
 PercentPopulationsVaccinated AS
