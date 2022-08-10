@@ -29,7 +29,7 @@ SELECT sum(quantity)*price as revenue
 FROM BIT_DB.JanSales
 GROUP BY product;
 
-/*Displaying the products, quanityt, and revenue for items
+/*Displaying the products, quantity, and revenue for items
  sold in February at the 548 Lincoln St location*/
 
 SELECT 
